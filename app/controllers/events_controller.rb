@@ -28,6 +28,7 @@ class EventsController < ApplicationController
     # add current_user to pass organizer_id to new Event object
     # use organized_events with multiple association to events table
     @event = current_user.organized_events.new(event_params)
+    @event.organizer_id = current_user.id
 
     respond_to do |format|
       if @event.save
