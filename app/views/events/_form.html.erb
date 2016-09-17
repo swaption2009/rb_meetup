@@ -42,6 +42,11 @@
   </div>
 
   <div class="field">
+    <%= f.label :all_tags, "List All Tags, separate each tag by a comma" %>
+    <%= f.text_area :all_tags %>
+  </div>
+
+  <div class="field">
     <%= f.label :organizer_id %>
     <%= f.number_field :organizer_id, value: current_user.id %>
   </div>
