@@ -35,6 +35,27 @@
   <%= @event.all_tags %>
 </p>
 
+<% if user_signed_in? && @event.organizer_id == current_user.id%>
+    <label>Join Requests</label>
+    <% if @pending_requests.present? %>
+        <% @pending_requests.each do |p|%>
+            <%= image_tag avatar_url(p.user) %>
+            <%= p.user.email%>
+            <%= link_to 'Accept', event_accept_request_path(:event_id => @event.id, :attendance_id => p.id), :class=>"btn btn-success btn-small" %>
+            <%= link_to 'Reject', event_reject_request_path(:event_id => @event.id, :attendance_id => p.id), :class=>"btn btn-danger btn-small" %>
+        <%end%>
+    <%else%>
+        <p>No Pending Requests for this event</p>
+    <%end%>
+<%end%>
+<br/>
+
+<label>Attendees</label>
+<% @attendees.each do |a|%>
+    <%= image_tag avatar_url(a.user) %>
+    <%= a.user.email%>
+<%end%>
+
 <p>
   <strong>Organizer:</strong>
   <%= image_tag avatar_url(@event_owner) %>

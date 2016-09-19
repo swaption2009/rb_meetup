@@ -77,7 +77,25 @@ class EventsController < ApplicationController
     respond_with @attendance
   end
 
+  def accept_request
+    @event = Event.find(params[:event_id])
+    @attendance = Attendance.find_by(id: params[:attendance_id]) rescue nil
+    @attendance.accept!
+    'Applicant Accepted' if @attendance.save
+    respond_with(@attendance)
+  end
+
+  def reject_request
+    @event = Event.find(params[:event_id])
+    @attendance = Attendance.where(params[:attendance_id]) rescue nil
+    @attendance.reject!
+    'Applicant Rejected' if @attendance.save
+    respond_with(@attendance)
+  end
+
+
   private
+
   def event_owner!
     authenticate_user!
     if @event.organizer_id != current_user.id
