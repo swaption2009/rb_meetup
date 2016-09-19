@@ -71,6 +71,12 @@ class EventsController < ApplicationController
     end
   end
 
+  def join
+    @attendace = Attendance.join_event(current_user.id, params[:event_id], 'request_sent')
+    'Request Sent' if @attendace.save
+    respond_with @attendance
+  end
+
   private
   def event_owner!
     authenticate_user!

@@ -4,6 +4,8 @@ class Event < ApplicationRecord
 
   belongs_to :organizers, class_name: 'User', optional: true
   has_many :tags, through: :taggings
+  has_many :attendances
+  has_many :users, through: :attendances
 
   def self.tagged_with(name)
     Tag.find_by_name!(name).events
