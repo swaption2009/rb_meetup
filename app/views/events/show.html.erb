@@ -37,7 +37,8 @@
 
 <p>
   <strong>Organizer:</strong>
-  <%= @event.organizer_id %>
+  <%= image_tag avatar_url(@event_owner) %>
+  <%= @event_owner.email %>
 </p>
 
 <%= link_to 'Edit', edit_event_path(@event) %> |

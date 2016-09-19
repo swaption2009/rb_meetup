@@ -22,4 +22,11 @@ class Event < ApplicationRecord
       Tag.where(name: n.strip).first_or_create!
     end
   end
+
+  def event_owner(organizer_id)
+    User.find_by id: organizer_id
+  end
+
+
+
 end
