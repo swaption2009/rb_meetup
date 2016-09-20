@@ -12,11 +12,12 @@ class Attendance < ApplicationRecord
   scope :accepted, -> {where(state: 'accepted')}
   scope :rejected, -> {where(state: 'rejected')}
 
+  workflow_column :state
 
   workflow do
     state :request_sent do
-      event: :accept, transition_to: :accepted
-      event: :reject, transition_to: :rejected
+      event :accept, :transition_to => :accepted
+      event :reject, :transition_to => :rejected
     end
     state :accepted
     state :rejected

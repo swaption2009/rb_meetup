@@ -14,7 +14,7 @@
         <label>Agenda:</label>
         <%= event.agenda %><br/>
         <label>Organized By:</label><br/>
-        <%@event_owner = Event.event_owner(event.organizer_id)%>
+        <% @event_owner = Event.event_owner(event.organizer_id )%>
         <%= image_tag avatar_url(@event_owner) %>
         <%= @event_owner.email %>
         <br/>

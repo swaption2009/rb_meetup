@@ -16,7 +16,9 @@ class EventsController < ApplicationController
   # GET /events/1
   # GET /events/1.json
   def show
-    @event_owners = @event.organizers
+    @event_owner = @event.organizer
+    @pending_requests = Attendance.pending.where(event_id: @event.id)
+    @attendees = Attendance.accepted.where(event_id: @event.id)
   end
 
   # GET /events/new
@@ -72,9 +74,10 @@ class EventsController < ApplicationController
   end
 
   def join
-    @attendace = Attendance.join_event(current_user.id, params[:event_id], 'request_sent')
-    'Request Sent' if @attendace.save
-    respond_with @attendance
+    @attendance = Attendance.join_event(current_user.id, params[:event_id], 'request_sent')
+    'Request Sent' if @attendance.save
+    redirect_to events_path
+
   end
 
   def accept_request
@@ -82,15 +85,15 @@ class EventsController < ApplicationController
     @attendance = Attendance.find_by(id: params[:attendance_id]) rescue nil
     @attendance.accept!
     'Applicant Accepted' if @attendance.save
-    respond_with(@attendance)
+    redirect_to events_path
   end
 
   def reject_request
     @event = Event.find(params[:event_id])
     @attendance = Attendance.where(params[:attendance_id]) rescue nil
-    @attendance.reject!
+    @attendance.reject
     'Applicant Rejected' if @attendance.save
-    respond_with(@attendance)
+    redirect_to events_path
   end
 
   def my_event

@@ -2,9 +2,6 @@
 
 <h1>Events</h1>
 
-<label>Tags:</label>
-<%= event.tags.map(&:name).map { |t| link_to t, tag_path(t) }.join(', ') %>
-
 <div class="col-lg-4">
   <h3>Search Tags</h3>
   <div>
@@ -24,6 +21,7 @@
       <th>Agenda</th>
       <th>Address</th>
       <th>Organizer</th>
+      <th>Tags</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -38,6 +36,7 @@
         <td><%= event.agenda %></td>
         <td><%= event.address %></td>
         <td><%= event.organizer_id %></td>
+        <td><%= raw event.tags.map(&:name).map { |t| link_to t, tag_path(t) }.join(', ') %><br/><br/></td>
         <td><%= link_to 'Show', event %></td>
         <td><%= link_to 'Edit', edit_event_path(event) %></td>
         <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>

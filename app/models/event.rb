@@ -2,8 +2,11 @@ class Event < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: :slugged
 
-  belongs_to :organizers, class_name: 'User', optional: true
+  belongs_to :organizer, class_name: 'User', optional: true
+
+  has_many :taggings
   has_many :tags, through: :taggings
+
   has_many :attendances
   has_many :users, through: :attendances
 
@@ -12,7 +15,8 @@ class Event < ApplicationRecord
   end
 
   def self.tag_counts
-    Tag.select('tags.name, count(taggins.tag_id' as count).joins(:taggings).group('taggings.tag_id')
+    Tag.select("tags.id, tags.name,count(taggings.tag_id) as count").
+        joins(:taggings).group("taggings.tag_id, tags.id, tags.name")
   end
 
   def all_tags

@@ -32,7 +32,7 @@
 
 <p>
   <strong>Tags:</strong>
-  <%= @event.all_tags %>
+  <%=raw @event.tags.map(&:name).map { |t| link_to t, tag_path(t) }.join(', ') %>
 </p>
 
 <% if user_signed_in? && @event.organizer_id == current_user.id%>
@@ -61,7 +61,10 @@
   <%= image_tag avatar_url(@event_owner) %>
   <%= @event_owner.email %>
 </p>
+<%= link_to "Join", event_join_path(:event_id => @event.id), :class=>"btn btn-success btn-small" %>
 
-<%= link_to 'Join', event_join_path(:event_id: @event.id), class: 'btn btn-success btn-small' %>
-<%= link_to 'Edit', edit_event_path(@event) %> |
-<%= link_to 'Back', events_path %>
+<%= link_to 'All Events', events_path, :class=>"btn btn-info btn-small" %>
+<% if user_signed_in? && @event.organizer_id == current_user.id%>
+    <%= link_to 'Edit', edit_event_path(@event), :class=>"btn btn-primary btn-small" %>
+    <%= link_to 'Delete', @event, method: :delete, data: { confirm: 'Are you sure?' }, :class=>"btn btn-danger btn-small" %>
+<%end%>
