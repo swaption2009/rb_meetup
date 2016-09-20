@@ -93,6 +93,9 @@ class EventsController < ApplicationController
     respond_with(@attendance)
   end
 
+  def my_event
+    @events = current_user.organized_events
+  end
 
   private
 

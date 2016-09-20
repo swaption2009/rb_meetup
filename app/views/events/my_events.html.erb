@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-lg-8">
+    <!--List Recently Created Events-->
+    <h3>Recently Created Events</h3>
+    <% @events.each do |event| %>
+        <h3><%= event.title %></h3>
+        <label>Start Date:</label><%= l event.start_date, :format => :date_format %>
+        <label>End Date:</label><%= l event.start_time, :format => :date_format %><br/>
+        <label>Location:</label><%= event.location %><br/>
+        <label>Address:</label>
+        <address>
+          <%= event.address %><br/>
+        </address>
+        <label>Agenda:</label>
+        <%= event.agenda %><br/>
+        <label>Organized By:</label><br/>
+        <%@event_owner = Event.event_owner(event.organizer_id)%>
+        <%= image_tag avatar_url(@event_owner) %>
+        <%= @event_owner.email %>
+        <br/>
+        <!-- Display Tags-->
+
+        <label>Tags:</label><br/>
+        <%=raw event.tags.map(&:name).map { |t| link_to t, tag_path(t) }.join(', ') %><br/><br/>
+
+
+        <%= link_to 'Show Details', event, :class=>"btn btn-info btn-small" %>
+        <% if user_signed_in? && event.organizer_id == current_user.id%>
+            <%= link_to 'Edit', edit_event_path(event), :class=>"btn btn-primary btn-small" %>
+            <%= link_to 'Delete', event, method: :delete, data: { confirm: 'Are you sure?' }, :class=>"btn btn-danger btn-small" %>
+        <%end%><br/><br/>
+    <% end %>
+
+  </div>
+  <%= render "tag_cloud"%>
+
+
+  <br>
+
+<%= link_to 'Create an Event', new_event_path, :class=>"btn btn-default btn-primary" %>
